@@ -5,45 +5,141 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import HourOpening from './components/hoursOpening';
 import useGuiche from './hooks/useGuiche';
 import useSlide from './hooks/useSlide';
-import { useEffect, useRef, useState } from 'react';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { ConfirmDialog } from 'primereact/confirmdialog';
+import { useEffect } from 'react';
+import { useModal } from 'react-modal-hook';
+import ReactModal from 'react-modal';
+import { useFormHook } from './hooks/useForm';
+import { Controller, FormProvider } from 'react-hook-form';
+import Iframe from 'react-iframe';
 
 export default function Home() {
-  const [visible, setVisible] = useState(false);
-  const toast: any = useRef(null);
-  const accept = () => {
-    toast.current.show({
-      severity: 'info',
-      summary: 'Confirmed',
-      detail: 'You have accepted',
-      life: 3000,
-    });
-  };
-
-  const reject = () => {
-    toast.current.show({
-      severity: 'warn',
-      summary: 'Rejected',
-      detail: 'You have rejected',
-      life: 3000,
-    });
-  };
   const { caixa } = useGuiche();
   const { loading, slide } = useSlide();
+  const { form, handleSubmit, iframeUrl } = useFormHook();
   useEffect(() => {
     document.documentElement.style.setProperty('--chamar', caixa.color);
   }, [caixa]);
+  const [showModal, hideModal] = useModal(() => (
+    <ReactModal
+      style={{
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        content: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          border: '1px solid #ccc',
+          background: '#fff',
+          overflow: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          borderRadius: '4px',
+          outline: 'none',
+          padding: '20px',
+        },
+      }}
+      isOpen>
+      <FormProvider {...form}>
+        <h1
+          style={{
+            textAlign: 'center',
+            fontSize: '20px',
+            marginBottom: '20px',
+          }}>
+          Digite a url do youtube
+        </h1>
+        <Controller
+          control={form.control}
+          name="url"
+          render={({
+            field: { onChange, onBlur, value },
+            fieldState: { error },
+          }) => {
+            return (
+              <>
+                <input
+                  type="text"
+                  onBlur={onBlur}
+                  value={value}
+                  onChange={onChange}
+                  placeholder="Url Youtube"
+                  autoCapitalize="none"
+                  style={{
+                    width: '350px',
+                    padding: '10px',
+                    marginBottom: '10px',
+                    display: 'block',
+                    background: '#f9f9f9',
+                    height: '40px',
+                  }}
+                />
+                {error && <span>{error.message}</span>}
+              </>
+            );
+          }}
+        />
+        <div
+          style={{
+            textAlign: 'center',
+          }}>
+          <button
+            type="submit"
+            onClick={form.handleSubmit((data) => {
+              handleSubmit(data);
+              hideModal();
+            })}
+            style={{
+              padding: '10px 20px',
+              background: '#f9f9f9',
+              border: 'none',
+              cursor: 'pointer',
+              marginTop: '10px',
+            }}>
+            SALVAR
+          </button>
+          <button
+            style={{
+              padding: '10px 20px',
+              background: '#f9f9f9',
+              border: 'none',
+              cursor: 'pointer',
+              marginTop: '10px',
+              marginLeft: '10px',
+            }}
+            onClick={hideModal}>
+            Cancelar
+          </button>
+        </div>
+      </FormProvider>
+    </ReactModal>
+  ));
   return (
     <main>
       <Container>
         <section
           className="carrossel"
-          onClick={() => {}}>
+          onClick={() => {
+            showModal();
+          }}>
           {!loading && (
             <>
-              {slide && (
+              {iframeUrl.indexOf('https://') !== -1 && (
+                <>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={iframeUrl}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen></iframe>
+                </>
+              )}
+              {slide && !iframeUrl && (
                 <TransitionImage name={slide.name}>
                   {slide.type === 'jpg' ? (
                     // eslint-disable-next-line @next/next/no-img-element

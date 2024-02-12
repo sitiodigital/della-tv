@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+'use client';
+import { ModalProvider } from 'react-modal-hook';
 import './globals.css';
 
 export default function RootLayout({
@@ -9,7 +9,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ModalProvider>{children} </ModalProvider>
+      </body>
     </html>
   );
 }
