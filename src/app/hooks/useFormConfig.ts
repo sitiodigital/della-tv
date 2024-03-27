@@ -75,10 +75,6 @@ export const useFormConfigHook = () => {
         if (portState === "open" && port) {
           // @ts-ignore
           navigator.serial.addEventListener("disconnect", onPortDisconnect);
-          // @ts-ignore
-          console.log('port', navigator.usb.getDevices());
-
-          const reader = port.readable.getReader();
 
           return () => {
             // @ts-ignore
