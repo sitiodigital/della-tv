@@ -95,7 +95,9 @@ export const useFormConfigHook = () => {
             
             const read = async () => {
                     while (port.readable) {
-                        const reader = port.readable.getReader();
+                      console.log('port.readable', port.readable);
+                        const reader = await port.readable.getReader();
+                        console.log('reader', reader);
                         const { value, done } = await reader.read();
                         console.log('value', value, done);
                         if (done) {
