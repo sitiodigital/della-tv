@@ -11,13 +11,17 @@ interface Slide {
 
 
 export const useSlide = () => {
+    
     const apiPhotos = useGraphql();
     const [loading, setLoading] = useState(true);
     const [data , setData] = useState<Slide[]>([]);
-    apiPhotos.then((data) => {
-        setLoading(false);
-        setData(data);
-    });
+    
+    if(data.length === 0) {
+        apiPhotos.then((data) => {
+            setLoading(false);
+            setData(data);
+        });
+    }
 
     const [index, setIndex] = useState(0);
 
