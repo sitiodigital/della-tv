@@ -13,10 +13,10 @@ import { Controller, FormProvider } from 'react-hook-form';
 import { useFormConfigHook } from './hooks/useFormConfig';
 
 export default function Home() {
-  const { caixa } = useGuiche();
+  const { caixa, clickMessage } = useGuiche();
   const { loading, slide } = useSlide();
   const { form, handleSubmit, iframeUrl } = useFormHook();
-  const { form: formConfig, handleSubmit: handleSubmitConfig, portState  } = useFormConfigHook();
+  const { form: formConfig, handleSubmit: handleSubmitConfig, portState  } = useFormConfigHook(clickMessage);
   useEffect(() => {
     document.documentElement.style.setProperty('--chamar', caixa.color);
   }, [caixa]);

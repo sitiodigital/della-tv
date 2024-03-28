@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { configFormSchema } from './validation';
 import { FieldValues, useForm } from 'react-hook-form';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 export type PortState = "closed" | "closing" | "open" | "opening";
-export const useFormConfigHook = () => {
+export const useFormConfigHook = (clickMessage: (code: any) => void) => {
   const [canUseSerial] = useState(() => true);
   const portRef = useRef<any | null>(null);
   const [portState, setPortState] = useState<PortState>("closed");
@@ -118,9 +118,7 @@ export const useFormConfigHook = () => {
     useEffect(() => {
       const port = portRef.current;
       if (portState === "open" && port) {
-        console.log('1 atualizado');
         const reader = port.readable.getReader();
-        console.log('reader', port.readable);
         const readData = async () => {
           try {
             while (port.readable) {
@@ -128,9 +126,8 @@ export const useFormConfigHook = () => {
               if (done) break;
 
               const decoder = new TextDecoder("utf8");
-              let dataDecoded = decoder.decode(value).replace(/[\r|\n]/gi, "");
-              console.log('dataDecoded', dataDecoded);
-              console.log('value', value);
+              let code = decoder.decode(value).replace(/[\r|\n]/gi, "");
+              clickMessage(code);
             }
           } catch (error) {
             console.error('Error reading data:', error);
@@ -149,6 +146,7 @@ export const useFormConfigHook = () => {
           });
         };
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [portState]);
 
     return { configFormSchema, handleSubmit, form, portState };

@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 // @ts-ignore
 import useSound from 'use-sound';
 
@@ -122,7 +122,7 @@ const list: IList = {
     },
 };
 
-export const useGuiche = (): { caixa: IItem; play: any } => {
+export const useGuiche = (): { caixa: IItem; play: any, clickMessage: (code: any) => void } => {
     const [play] = useSound('campainha.mp3', {
         interrupt: true,
         playbackRate: 1,
@@ -137,6 +137,17 @@ export const useGuiche = (): { caixa: IItem; play: any } => {
     }, []);
     const [caixa, setCaixa] = useState<IItem>({} as IItem);
 
+    const clickMessage = (code: any) => {
+        const caixa = list[code];
+        if (caixa) {
+            setCaixa({
+                ...caixa,
+                hour: currentDate(),
+            });
+            play();
+        }
+    };
+
     // useEffect(() => {
 
     //     setCaixa({
@@ -149,24 +160,24 @@ export const useGuiche = (): { caixa: IItem; play: any } => {
     //     play();
     // }, [caixa, play]);
 
-    useEffect(() => {
-        const clickMessage = (event: any) => {
-            const { peso, id } = event.data;
-            const caixa = list[peso];
-            if (caixa) {
-                setCaixa({
-                    ...caixa,
-                    hour: currentDate(),
-                });
-                play();
-            }
-        };
-        window.addEventListener('message', clickMessage);
-        return () => {
-            window.removeEventListener('click', clickMessage);
-        };
-    }, [currentDate, play]);
-    return { caixa, play };
+    // useEffect(() => {
+    //     const clickMessage = (event: any) => {
+    //         const { peso, id } = event.data;
+    //         const caixa = list[peso];
+    //         if (caixa) {
+    //             setCaixa({
+    //                 ...caixa,
+    //                 hour: currentDate(),
+    //             });
+    //             play();
+    //         }
+    //     };
+    //     window.addEventListener('message', clickMessage);
+    //     return () => {
+    //         window.removeEventListener('click', clickMessage);
+    //     };
+    // }, [currentDate, play]);
+    return { caixa, play, clickMessage };
 };
 
 export default useGuiche;
