@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { configFormSchema } from './validation';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type PortState = "closed" | "closing" | "open" | "opening";
 export const useFormConfigHook = (clickMessage: (code: any) => void) => {
@@ -12,6 +12,18 @@ export const useFormConfigHook = (clickMessage: (code: any) => void) => {
         resolver: zodResolver(configFormSchema),
         mode: 'onChange',
     });
+
+    function requestFullScreen(element: any)
+{
+        if (element.requestFullscreen)
+            element.requestFullscreen();
+        else if (element.msRequestFullscreen)
+            element.msRequestFullscreen();
+        else if (element.mozRequestFullScreen)
+            element.mozRequestFullScreen();
+        else if (element.webkitRequestFullscreen)
+            element.webkitRequestFullscreen();
+    }
 
     const onPortDisconnect = useCallback(() => {
         portRef.current = null;
@@ -55,19 +67,13 @@ export const useFormConfigHook = (clickMessage: (code: any) => void) => {
         if (!canUseSerial || !bitrate) return;
         try {
             setPortState("opening");
-            // @ts-ignore
-            const ports = await navigator.serial.getPorts();
-            if (ports.length > 0) {
-                const port = ports[0];
-                await openPort(port, bitrate);
-                return true;
-            } else {
-              await requestPermissionPort(bitrate);
-            }
+            await requestPermissionPort(bitrate);
+            requestFullScreen(document.documentElement);
+            return true;
         } catch (error) {
             setPortState("closed");
         }
-    } , [canUseSerial, openPort, requestPermissionPort]);
+    } , [canUseSerial, requestPermissionPort]);
 
 
       useEffect(() => {
@@ -85,35 +91,6 @@ export const useFormConfigHook = (clickMessage: (code: any) => void) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [portState]);
-
-    // read data from serial port
-    // useEffect(() => {
-    //   try {
-    //     const port = portRef.current;
-    //     if (portState === "open" && port) {
-    //         console.log('port', port);
-            
-    //         const read = async () => {
-    //                 while (port.readable) {
-    //                   console.log('port.readable', port.readable);
-    //                     const reader = await port.readable.getReader();
-    //                     console.log('reader', reader);
-    //                     const { value, done } = await reader.read();
-    //                     console.log('value', value, done);
-    //                     if (done) {
-    //                         // Allow the serial port to be closed later.
-    //                         reader.releaseLock();
-    //                         break;
-    //                     }
-    //                     console.log(value);
-    //                 }
-    //         };
-    //         read();
-    //     }
-    //   } catch (error) {
-    //     console.error('Error read data from serial port', error);
-    //   }
-    // }, [portState]);
 
     useEffect(() => {
       const port = portRef.current;
