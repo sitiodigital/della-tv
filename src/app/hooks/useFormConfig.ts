@@ -87,31 +87,62 @@ export const useFormConfigHook = () => {
       }, [portState]);
 
     // read data from serial port
-    useEffect(() => {
-      try {
-        const port = portRef.current;
-        if (portState === "open" && port) {
-            console.log('port', port);
+    // useEffect(() => {
+    //   try {
+    //     const port = portRef.current;
+    //     if (portState === "open" && port) {
+    //         console.log('port', port);
             
-            const read = async () => {
-                    while (port.readable) {
-                      console.log('port.readable', port.readable);
-                        const reader = await port.readable.getReader();
-                        console.log('reader', reader);
-                        const { value, done } = await reader.read();
-                        console.log('value', value, done);
-                        if (done) {
-                            // Allow the serial port to be closed later.
-                            reader.releaseLock();
-                            break;
-                        }
-                        console.log(value);
-                    }
-            };
-            read();
-        }
-      } catch (error) {
-        console.error('Error read data from serial port', error);
+    //         const read = async () => {
+    //                 while (port.readable) {
+    //                   console.log('port.readable', port.readable);
+    //                     const reader = await port.readable.getReader();
+    //                     console.log('reader', reader);
+    //                     const { value, done } = await reader.read();
+    //                     console.log('value', value, done);
+    //                     if (done) {
+    //                         // Allow the serial port to be closed later.
+    //                         reader.releaseLock();
+    //                         break;
+    //                     }
+    //                     console.log(value);
+    //                 }
+    //         };
+    //         read();
+    //     }
+    //   } catch (error) {
+    //     console.error('Error read data from serial port', error);
+    //   }
+    // }, [portState]);
+
+    useEffect(() => {
+      const port = portRef.current;
+      if (portState === "open" && port) {
+        const reader = port.readable.getReader();
+        console.log('reader', port.readable);
+        const readData = async () => {
+          try {
+            while (port.readable) {
+              const { value, done } = await reader.read();
+              if (done) break;
+              console.log('value', value);
+            }
+          } catch (error) {
+            console.error('Error reading data:', error);
+          } finally {
+            reader.releaseLock();
+          }
+        };
+  
+        readData();
+  
+        return () => {
+          reader.cancel().then(() => {
+            console.log('Reader cancelled');
+          }).catch((error: any) => {
+            console.error('Error cancelling reader:', error);
+          });
+        };
       }
     }, [portState]);
 
