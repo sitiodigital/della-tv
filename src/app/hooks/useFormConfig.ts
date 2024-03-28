@@ -128,8 +128,7 @@ export const useFormConfigHook = () => {
               if (done) break;
 
               const decoder = new TextDecoder("utf8");
-              const dataView = new DataView(value);
-              let dataDecoded = decoder.decode(dataView).replace(/[\r|\n]/gi, "");
+              let dataDecoded = decoder.decode(value).replace(/[\r|\n]/gi, "");
               console.log('dataDecoded', dataDecoded);
               console.log('value', value);
             }
