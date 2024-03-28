@@ -118,6 +118,7 @@ export const useFormConfigHook = () => {
     useEffect(() => {
       const port = portRef.current;
       if (portState === "open" && port) {
+        console.log('1 atualizado');
         const reader = port.readable.getReader();
         console.log('reader', port.readable);
         const readData = async () => {
@@ -125,6 +126,11 @@ export const useFormConfigHook = () => {
             while (port.readable) {
               const { value, done } = await reader.read();
               if (done) break;
+
+              const decoder = new TextDecoder("utf8");
+              const dataView = new DataView(value);
+              let dataDecoded = decoder.decode(dataView).replace(/[\r|\n]/gi, "");
+              console.log('dataDecoded', dataDecoded);
               console.log('value', value);
             }
           } catch (error) {
