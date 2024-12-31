@@ -14,53 +14,53 @@ interface IList {
     [key: string]: IItem;
 }
 const list: IList = {
-    '29D1B5B1': { code: 2, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '29D1B5B2': {
+    '2EC298B1': { code: 2, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '2EC298B2': {
         code: 2,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '29D1B5B3': {
+    '2EC298B3': {
         code: 2,
         typeId: 2,
         color: '#2f84cc',
         typeName: 'APENAS CARTÃO',
     },
-    '247D0BB1': { code: 5, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '247D0BB2': {
+    '2343C4B1': { code: 5, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '2343C4B2': {
         code: 5,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '247D0BB3': {
+    '2343C4B3': {
         code: 5,
         typeId: 2,
         color: '#2f84cc',
         typeName: 'APENAS CARTÃO',
     },
-    '23EDEDB1': { code: 3, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '23EDEDB2': {
+    '2187E8B1': { code: 3, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '2187E8B2': {
         code: 3,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '23EDEDB3': {
+    '2187E8B3': {
         code: 3,
         typeId: 2,
         color: '#2f84cc',
         typeName: 'APENAS CARTÃO',
     },
-    '2708FDB1': { code: 4, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '2708FDB2': {
+    '2509C4B1': { code: 4, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '2509C4B2': {
         code: 4,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '2708FDB3': {
+    '2509C4B3': {
         code: 4,
         typeId: 2,
         color: '#2f84cc',
@@ -80,41 +80,41 @@ const list: IList = {
         typeName: 'APENAS CARTÃO',
     },
     // START NEW
-    '2FFA0AB1': { code: 7, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '2FFA0AB2': {
+    '22F498B1': { code: 7, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '22F498B2': {
         code: 7,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '2FFA0AB3': {
+    '22F498B3': {
         code: 7,
         typeId: 2,
         color: '#2f84cc',
         typeName: 'APENAS CARTÃO',
     },
     //END NEW
-    '268B13B1': { code: 6, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '268B13B2': {
+    '2E14F8B1': { code: 6, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '2E14F8B2': {
         code: 6,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '268B13B3': {
+    '2E14F8B3': {
         code: 6,
         typeId: 2,
         color: '#2f84cc',
         typeName: 'APENAS CARTÃO',
     },
-    '2091EDB1': { code: 1, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
-    '2091EDB2': {
+    '238224B1': { code: 1, typeId: 0, color: '#2f1c00', typeName: 'NORMAL' },
+    '238224B2': {
         code: 1,
         typeId: 1,
         color: '#ef5451',
         typeName: 'PREFERENCIAL',
     },
-    '2091EDB3': {
+    '238224B3': {
         code: 1,
         typeId: 2,
         color: '#2f84cc',
